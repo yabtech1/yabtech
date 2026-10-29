@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yabtech Creative Hub | AI Video, UGC Ads, Web Design and Apps in Minna, Nigeria</title>
+<meta name="description" content="Yabtech Creative Hub (YCH) is a digital agency in Minna, Nigeria. AI video, UGC ads, YouTube automation training, graphic design, websites and apps.">
+<meta name="theme-color" content="#070A17">
+<meta property="og:title" content="Yabtech Creative Hub: AI video, UGC ads, design, websites and apps">
+<meta property="og:description" content="Make it. Post it. Scale it. A creative and tech studio in Minna, Niger State.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yabtech.site/">
+<link rel="canonical" href="https://yabtech.site/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='10' fill='%23070A17'/%3E%3Cpath d='M24 6l15.6 9v18L24 42 8.400 33V15z' fill='none' stroke='%236F82FF' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M16 17l8 8 8-8M24 25v9' fill='none' stroke='%23EEF2FF' stroke-width='3.500' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='25' r='3.200' fill='%23FF6A1F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,100..900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: a creative control room. Dark-first midnight blue, a faint engineering grid behind the hero,
+   and a video-editor timeline as the hero artwork. Electric blue does the work; one orange "record light" is the
+   loud moment (the highlighted "Scale it." and the playhead). */
+:root{
+  --paper:#070A17; --sheet:#0E1328; --panel:#121935; --ink:#EEF2FF; --ink-2:#9AA6CE; --line:#232C54;
+  --accent:#6F82FF; --accent-ink:#050816; --mark:#FF6A1F; --on-mark:#0A0F24; --grid:rgba(111,130,255,.09); --screen:#0A0F2C;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --paper:#F2F4FC; --sheet:#FFFFFF; --panel:#E4E8F7; --ink:#0A0F24; --ink-2:#464F78; --line:#C7CDE6;
+    --accent:#2B44E8; --accent-ink:#FFFFFF; --grid:rgba(43,68,232,.08); color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --paper:#F2F4FC; --sheet:#FFFFFF; --panel:#E4E8F7; --ink:#0A0F24; --ink-2:#464F78; --line:#C7CDE6;
+  --accent:#2B44E8; --accent-ink:#FFFFFF; --grid:rgba(43,68,232,.08); color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:var(--accent);text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:20}
+.skip:focus{left:0}
+
+.wrap{width:100%;max-width:1160px;margin-inline:auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.band{background:var(--panel)}
+section{padding-block:clamp(3rem,8vw,6rem)}
+
+.mono{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.display{font-family:var(--f-display);font-weight:800;font-stretch:112%;letter-spacing:-.02em;line-height:1;text-wrap:balance;margin:0}
+h2.display{font-size:clamp(1.9rem,4.6vw,3.1rem);max-width:22ch}
+h3{font-family:var(--f-display);font-weight:700;font-stretch:108%;font-size:1.5rem;line-height:1.15;margin:.35rem 0 .6rem;letter-spacing:-.01em}
+p{margin:0 0 1rem}
+.lead{font-size:1.2rem;max-width:35rem;color:var(--ink-2)}
+.sec-head{display:flex;flex-direction:column;gap:.9rem;margin-bottom:clamp(2rem,5vw,3.25rem)}
+.sec-head p{max-width:38rem;color:var(--ink-2);margin:0}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.8rem 1.3rem;border-radius:4px;
+  font:600 1rem/1.2 var(--f-body);text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:transparent;cursor:pointer;
+  transition:background-color .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn-sm{padding:.45rem .9rem;font-size:.95rem}
+
+/* Header and logo */
+.top{border-bottom:1px solid var(--line)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1.5rem;padding-block:.9rem}
+.brand{display:inline-flex;align-items:center;gap:.7rem;color:var(--ink);text-decoration:none}
+.brand .lg{width:42px;height:42px;flex:none}
+.brand .txt{display:flex;flex-direction:column;align-items:flex-start;gap:.38rem}
+.brand .lg-w{height:19px;width:auto;display:block}
+.brand .nm{font:500 .6rem/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.lg-hex{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round}
+.lg-y{fill:none;stroke:var(--ink);stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.lg-n{fill:var(--accent)}
+.lg-c{fill:var(--mark)}
+.lg-w{fill:none;stroke:var(--ink);stroke-width:6;stroke-linecap:butt;stroke-linejoin:miter;overflow:visible}
+.top nav{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem 1.2rem}
+.top nav a:not(.btn){color:var(--ink);text-decoration:none;font-weight:500;font-size:.98rem}
+.top nav a:not(.btn):hover{color:var(--accent);text-decoration:underline}
+
+/* Hero */
+.hero{position:relative;padding-block:clamp(2.5rem,7vw,5.5rem)}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:36px 36px;-webkit-mask-image:linear-gradient(#000 35%,transparent);mask-image:linear-gradient(#000 35%,transparent)}
+.hero-grid{position:relative;display:grid;gap:2.75rem;align-items:center}
+.hero-grid>*{min-width:0}
+.hero h1{font-size:clamp(2.3rem,9vw,4.6rem);margin:1rem 0 1.4rem}
+.hero h1>span{display:block}
+.hero h1>.hl{display:inline-block;background:var(--mark);color:var(--on-mark);padding:.02em .14em .06em;margin-left:-.06em;margin-top:.08em}
+.cta{display:flex;flex-wrap:wrap;gap:.8rem;margin:1.8rem 0 1.4rem}
+.proof{margin:0}
+.proof svg{display:block;width:100%;height:auto}
+.proof figcaption{margin-top:.6rem;text-align:right}
+@media (min-width:900px){
+  .hero-grid{grid-template-columns:1fr 1fr;gap:3rem}
+  .hero h1{font-size:min(4.4rem,5.6vw)}
+}
+
+/* hero artwork */
+.w-win{fill:var(--sheet);stroke:var(--line);stroke-width:1.5}
+.f-acc{fill:var(--accent)} .f-mark{fill:var(--mark)} .f-ink{fill:var(--ink)} .f-panel{fill:var(--panel)} .f-sheet{fill:var(--sheet)} .f-screen{fill:var(--screen)}
+.ln{stroke:var(--line);stroke-width:1.5;fill:none}
+.tick{stroke:var(--ink-2);stroke-width:1;fill:none}
+.wv{stroke:var(--accent);stroke-width:2;stroke-linecap:round;fill:none}
+.pill{fill:var(--sheet);stroke:var(--accent);stroke-width:1.5}
+.node{fill:var(--sheet);stroke:var(--line);stroke-width:1.5}
+.flow{stroke:var(--accent);stroke-width:2;opacity:.55;fill:none}
+.tt{font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;fill:var(--ink-2)}
+.tn{font-family:var(--f-mono);font-size:9px;letter-spacing:.06em;fill:var(--ink);text-anchor:middle}
+
+/* Services */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17.5rem),1fr));gap:3rem 2rem}
+.svc{position:relative;min-width:0;border-top:1px solid var(--line);padding-top:1.3rem}
+.svc::before{content:"";position:absolute;left:0;top:-1px;width:48px;height:3px;background:var(--accent)}
+.svc .ico{display:block;width:44px;height:44px;color:var(--ink);margin-bottom:.8rem}
+.svc .ico .a{stroke:var(--accent)}
+.svc .ico .af{fill:var(--accent);stroke:none}
+.svc p{color:var(--ink-2)}
+.svc ul{list-style:none;margin:1.2rem 0;padding:0;display:grid;gap:.55rem}
+.svc li{display:flex;gap:.7rem;align-items:baseline}
+.svc li::before{content:"";flex:none;width:.5rem;height:.5rem;background:var(--accent);transform:translateY(-.05em)}
+.svc .deliver{border-top:1px dashed var(--line);padding-top:.9rem;margin:0}
+
+/* Process */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14.5rem),1fr));gap:2rem;counter-reset:step}
+.steps li{min-width:0;border-top:3px solid var(--ink);padding-top:1rem;counter-increment:step}
+.steps li::before{content:counter(step);display:block;font:800 2.8rem/1 var(--f-display);font-stretch:112%;color:var(--accent);margin-bottom:.5rem}
+.steps h3{margin-top:0}
+.steps p{color:var(--ink-2);margin:0}
+
+/* About */
+.about-grid{display:grid;gap:2.5rem}
+.about-grid>*{min-width:0}
+.facts{margin:0;display:grid;gap:0}
+.facts div{display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;padding:1rem 0;border-top:1px solid var(--line)}
+.facts div:last-child{border-bottom:1px solid var(--line)}
+.facts dt{margin:0}.facts dd{margin:0}
+@media (min-width:900px){.about-grid{grid-template-columns:1fr 1fr;gap:4rem;align-items:start}}
+
+/* FAQ */
+.faq{max-width:48rem}
+details{border-top:1px solid var(--line)}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:1.05rem 0;font-weight:600;font-size:1.1rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font:500 1.4rem/1 var(--f-mono);color:var(--accent);flex:none}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--ink-2);padding-bottom:1.1rem;margin:0;max-width:40rem}
+
+/* Contact */
+.contact-grid{display:grid;gap:2.5rem}
+.contact-grid>*{min-width:0}
+@media (min-width:900px){.contact-grid{grid-template-columns:.9fr 1.1fr;gap:4rem;align-items:start}}
+.reach{list-style:none;margin:1.6rem 0 0;padding:0;display:grid;gap:0}
+.reach li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.4rem 1rem;padding:.95rem 0;border-top:1px solid var(--line)}
+.reach li:last-child{border-bottom:1px solid var(--line)}
+.reach .k{display:block;margin-bottom:.15rem}
+.reach .v{font-weight:500;overflow-wrap:anywhere}
+.copy{font:500 .8rem/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:.5rem .7rem;border:1.5px solid var(--line);
+  background:var(--sheet);color:var(--ink);border-radius:4px;cursor:pointer}
+.copy:hover{border-color:var(--accent)}
+.brief{background:var(--sheet);border:1.5px solid var(--accent);border-radius:6px;padding:clamp(1.2rem,3vw,2rem);display:grid;gap:1.1rem}
+.field{display:grid;gap:.4rem}
+.field label{font:500 .78rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+input,select,textarea{width:100%;font:400 1rem/1.4 var(--f-body);color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:4px;padding:.75rem .85rem}
+textarea{resize:vertical;min-height:7.5rem}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:.8rem}
+.hint{margin:0;font-size:.92rem;color:var(--ink-2)}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding-block:2rem}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem 2rem}
+.foot p{margin:0;color:var(--ink-2);font-size:.95rem}
+.foot a{color:var(--ink)}
+.foot .brand .lg{width:34px;height:34px}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+
+</head>
+<body>
+<a class="skip" href="#services">Skip to services</a>
+
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Yabtech Creative Hub, home">
+      <svg class="lg" viewBox="0 0 48 48" aria-hidden="true"><path class="lg-hex" d="M24 3L42.2 13.5V34.5L24 45L5.8 34.5V13.5Z"/><path class="lg-y" d="M13.5 14L24 25L34.5 14M24 25V38"/><circle class="lg-n" cx="13.5" cy="14" r="2.8"/><circle class="lg-n" cx="34.5" cy="14" r="2.8"/><circle class="lg-n" cx="24" cy="38" r="2.8"/><circle class="lg-c" cx="24" cy="25" r="3.8"/></svg>
+      <span class="txt"><svg class="lg-w" viewBox="-3 -3 87 34" aria-label="YCH" role="img"><path d="M0 0L11 15L22 0M11 15V28"/><path d="M51 6.5A13 13 0 1 0 51 21.5"/><path d="M58 0V28M80 0V28M58 14H80"/></svg><span class="nm">Yabtech Creative Hub</span></span>
+    </a>
+    <nav aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-sm" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="mono" style="margin:0">AI video &middot; UGC ads &middot; Minna, Nigeria</p>
+      <h1 class="display"><span>Make it.</span><span>Post it.</span><span class="hl">Scale it.</span></h1>
+      <p class="lead">Yabtech Creative Hub produces AI video and UGC ads, designs brands, builds websites and apps, and teaches YouTube automation to people who want to grow online.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://wa.me/2348147017603?text=Hello%20Yabtech%20Creative%20Hub%2C%20I%20would%20like%20to%20start%20a%20project." target="_blank" rel="noopener">Start a project on WhatsApp</a>
+        <a class="btn" href="#services">See what we do</a>
+      </div>
+      <p class="mono" style="margin:0">AI video &middot; UGC ads &middot; YouTube automation &middot; Design &middot; Web &middot; Apps</p>
+    </div>
+
+    <figure class="proof">
+      <svg viewBox="0 0 520 440" role="img" aria-label="Illustration of a video project: a 16:9 preview and a vertical phone preview, an automation flow from script to upload, and an editing timeline with video, voice, caption and flow tracks.">
+<rect class="w-win" x="30" y="30" width="460" height="380" rx="10"/>
+<path class="ln" d="M30 58H490"/>
+<circle class="f-mark" cx="50" cy="44" r="4"/><circle class="f-acc" cx="64" cy="44" r="4"/><circle class="f-panel" cx="78" cy="44" r="4"/>
+<text class="tt" x="96" y="47">campaign-01 &#183; 16:9 + 9:16</text>
+
+<rect class="f-screen" x="50" y="72" width="240" height="135" rx="4"/>
+<polygon class="f-acc" points="50,207 108,152 150,188 202,136 290,207" opacity=".5"/>
+<circle class="f-mark" cx="246" cy="102" r="15"/>
+<circle cx="170" cy="138" r="22" fill="#fff" opacity=".2"/>
+<polygon points="163,126 163,150 184,138" fill="#fff"/>
+<rect x="100" y="182" width="140" height="14" rx="7" fill="#fff" opacity=".92"/>
+<rect x="112" y="187" width="116" height="4" rx="2" fill="#0A0F2C"/>
+
+<rect class="f-screen" x="308" y="72" width="78" height="135" rx="10" style="stroke:var(--accent);stroke-width:2"/>
+<rect x="337" y="78" width="20" height="3" rx="1.5" fill="#fff" opacity=".5"/>
+<circle cx="347" cy="118" r="13" fill="#B9C4FF"/>
+<path class="f-acc" d="M322 172Q347 130 372 172V184H322Z"/>
+<rect class="f-mark" x="321" y="192" width="52" height="9" rx="4.5"/>
+
+<rect class="node" x="406" y="72" width="64" height="24" rx="5"/><text class="tn" x="438" y="88">SCRIPT</text>
+<rect class="node" x="406" y="108" width="64" height="24" rx="5"/><text class="tn" x="438" y="124">VOICE</text>
+<rect class="node" x="406" y="144" width="64" height="24" rx="5"/><text class="tn" x="438" y="160">RENDER</text>
+<rect class="f-acc" x="406" y="180" width="64" height="24" rx="5"/><text class="tn" x="438" y="196" style="fill:var(--accent-ink)">UPLOAD</text>
+<path class="flow" d="M438 96V108M438 132V144M438 168V180"/>
+
+<path class="tick" d="M100 240V244M120 242V244M140 242V244M160 242V244M180 242V244M200 240V244M220 242V244M240 242V244M260 242V244M280 242V244M300 240V244M320 242V244M340 242V244M360 242V244M380 242V244M400 240V244M420 242V244M440 242V244M460 242V244"/>
+<text class="tt" x="100" y="235" text-anchor="middle">0:00</text><text class="tt" x="200" y="235" text-anchor="middle">0:05</text>
+<text class="tt" x="300" y="235" text-anchor="middle">0:10</text><text class="tt" x="400" y="235" text-anchor="middle">0:15</text>
+
+<text class="tt" x="50" y="268">VIDEO</text><text class="tt" x="50" y="298">VOICE</text><text class="tt" x="50" y="328">CAPS</text><text class="tt" x="50" y="358">FLOW</text>
+<rect class="f-panel" x="100" y="252" width="370" height="24" rx="3"/>
+<rect class="f-panel" x="100" y="282" width="370" height="24" rx="3"/>
+<rect class="f-panel" x="100" y="312" width="370" height="24" rx="3"/>
+<rect class="f-panel" x="100" y="342" width="370" height="24" rx="3"/>
+<rect class="f-acc" x="102" y="254" width="88" height="20" rx="2"/>
+<rect class="f-acc" x="194" y="254" width="60" height="20" rx="2" opacity=".7"/>
+<rect class="f-acc" x="258" y="254" width="108" height="20" rx="2"/>
+<rect class="f-acc" x="370" y="254" width="98" height="20" rx="2" opacity=".5"/>
+<path class="wv" d="M106.0 289.2V298.8M110.0 287.9V300.1M114.0 289.7V298.3M118.0 286.4V301.6M122.0 287.9V300.1M126.0 287.5V300.5M130.0 287.0V301.0M134.0 289.7V298.3M138.0 287.3V300.7M142.0 289.7V298.3M146.0 286.0V302.0M150.0 286.7V301.3M154.0 290.3V297.7M158.0 288.5V299.5M162.0 291.5V296.5M166.0 284.9V303.1M170.0 287.0V301.0M174.0 291.3V296.7M178.0 290.0V298.0M182.0 290.0V298.0M186.0 284.3V303.7M190.0 287.8V300.2M194.0 290.3V297.7M198.0 291.4V296.6M202.0 288.8V299.2M206.0 284.3V303.7M210.0 289.1V298.9M214.0 288.8V299.2M218.0 290.3V297.7M222.0 288.1V299.9M226.0 284.9V303.1M230.0 290.8V297.2M234.0 287.3V300.7M238.0 289.5V298.5M242.0 288.0V300.0M246.0 286.0V302.0M250.0 290.4V297.6M254.0 286.1V301.9M258.0 289.2V298.8M262.0 288.5V299.5M266.0 287.5V300.5M270.0 288.6V299.4M274.0 285.2V302.8M278.0 289.4V298.6M282.0 289.5V298.5M286.0 289.1V298.9M290.0 287.1V300.9M294.0 284.9V303.1M298.0 290.2V297.8M302.0 290.7V297.3M306.0 290.8V297.2M310.0 286.0V302.0M314.0 285.2V302.8M318.0 291.4V296.6M322.0 290.8V297.2M326.0 290.9V297.1M330.0 285.4V302.6M334.0 286.1V301.9M338.0 290.0V298.0M342.0 289.5V298.5M346.0 289.9V298.1M350.0 285.4V302.6M354.0 287.5V300.5M358.0 288.3V299.7M362.0 288.4V299.6M366.0 289.4V298.6M370.0 286.0V302.0M374.0 289.1V298.9M378.0 286.7V301.3M382.0 287.7V300.3M386.0 289.6V298.4M390.0 287.0V301.0M394.0 291.0V297.0M398.0 285.3V302.7M402.0 287.5V300.5M406.0 290.2V297.8M410.0 288.4V299.6M414.0 290.3V297.7M418.0 284.5V303.5M422.0 288.0V300.0M426.0 291.3V296.7M430.0 289.9V298.1M434.0 288.8V299.2M438.0 284.1V303.9M442.0 288.9V299.1M446.0 290.3V297.7M450.0 291.4V296.6M454.0 287.8V300.2M458.0 284.4V303.6M462.0 290.4V297.6"/>
+<rect class="pill" x="104" y="316" width="52" height="16" rx="8"/><rect class="pill" x="162" y="316" width="40" height="16" rx="8"/>
+<rect class="pill" x="208" y="316" width="64" height="16" rx="8"/><rect class="pill" x="278" y="316" width="48" height="16" rx="8"/>
+<rect class="pill" x="332" y="316" width="70" height="16" rx="8"/><rect class="pill" x="408" y="316" width="56" height="16" rx="8"/>
+<path class="flow" d="M124 354H452"/>
+<circle class="f-acc" cx="124" cy="354" r="5"/><circle class="f-acc" cx="188" cy="354" r="5"/><circle class="f-mark" cx="252" cy="354" r="5"/>
+<circle class="f-acc" cx="316" cy="354" r="5"/><circle class="f-acc" cx="380" cy="354" r="5"/><circle class="f-acc" cx="452" cy="354" r="5"/>
+
+<path d="M252 244V370" stroke="var(--mark)" stroke-width="2"/>
+<polygon class="f-mark" points="240,224 264,224 264,236 252,244 240,236"/>
+<text x="252" y="234" text-anchor="middle" style="font-family:var(--f-mono);font-size:8px;fill:var(--on-mark)">0:08</text>
+
+<text class="tt" x="50" y="396">EXPORT &#183; MP4</text>
+<rect class="f-panel" x="330" y="388" width="140" height="8" rx="4"/><rect class="f-acc" x="330" y="388" width="104" height="8" rx="4"/>
+</svg>
+      <figcaption class="mono">Sample project &middot; illustration</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="services" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mono">Services</span>
+      <h2 class="display">One hub for video, ads, design and code.</h2>
+      <p>Everything is made together, so your video, your ad, your website and your app look like the same business.</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="4" y="9" width="36" height="26" rx="4"/><polygon class="af" points="19,16 19,28 29,22"/></svg>
+        <span class="mono">Video</span>
+        <h3>AI video</h3>
+        <p>Explainers, promos and story videos made with AI tools, then planned, edited and checked by a person.</p>
+        <ul>
+          <li>AI explainer and promo videos</li>
+          <li>Product and brand animations</li>
+          <li>Voiceover, captions and music</li>
+          <li>Faceless videos for YouTube channels</li>
+          <li>Vertical cuts for Reels, TikTok and Shorts</li>
+        </ul>
+        <p class="deliver mono">Delivered as MP4 in 16:9 and 9:16</p>
+      </article>
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="12" y="3" width="20" height="38" rx="4"/><circle class="a" cx="22" cy="16" r="4"/><path class="a" d="M16 31q6-9 12 0"/></svg>
+        <span class="mono">Ads</span>
+        <h3>UGC ads</h3>
+        <p>Creator-style video ads built for the social feed, with a strong opening and a clear next step.</p>
+        <ul>
+          <li>Product ads in a creator style</li>
+          <li>Scripts and hooks for the first 3 seconds</li>
+          <li>On-screen text and captions</li>
+          <li>Several hook versions to test</li>
+          <li>Sized for Meta, TikTok and YouTube ads</li>
+        </ul>
+        <p class="deliver mono">Delivered as MP4 in 9:16, 1:1 and 16:9</p>
+      </article>
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 7a15 15 0 1 0 15 15"/><path d="M22 2l6 5-6 5"/><circle class="af" cx="22" cy="22" r="4"/></svg>
+        <span class="mono">Training</span>
+        <h3>YouTube automation</h3>
+        <p>We teach you how to plan, produce and publish a YouTube channel with AI tools and a repeatable workflow.</p>
+        <ul>
+          <li>Niche and topic research</li>
+          <li>Scripting with AI</li>
+          <li>Voiceover and visuals with AI tools</li>
+          <li>Editing and upload workflow</li>
+          <li>Titles, thumbnails and search</li>
+        </ul>
+        <p class="deliver mono">Delivered as hands-on lessons you follow along</p>
+      </article>
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="17" cy="19" r="11"/><rect class="a" x="19" y="21" width="17" height="17"/></svg>
+        <span class="mono">Print &amp; social</span>
+        <h3>Graphic design</h3>
+        <p>Branding and marketing material that reads clearly across a counter and on a phone screen.</p>
+        <ul>
+          <li>Logos and brand identity</li>
+          <li>Flyers, posters and banners</li>
+          <li>Social media posts and covers</li>
+          <li>YouTube thumbnails and channel art</li>
+          <li>Product ad graphics</li>
+        </ul>
+        <p class="deliver mono">Delivered as PNG, JPG, SVG and PDF</p>
+      </article>
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="4" y="8" width="36" height="28" rx="3"/><path d="M4 16h36"/><path class="a" d="M11 25h12M11 30h20"/></svg>
+        <span class="mono">Web</span>
+        <h3>Web design</h3>
+        <p>Fast, mobile-friendly sites that explain what you sell and make it easy to get in touch.</p>
+        <ul>
+          <li>Business and company websites</li>
+          <li>Landing pages for a single offer</li>
+          <li>Portfolio and event sites</li>
+          <li>Layouts that work on any phone</li>
+          <li>Domain and hosting setup</li>
+        </ul>
+        <p class="deliver mono">Delivered as a live site on your own domain</p>
+      </article>
+      <article class="svc">
+        <svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 14l-8 8 8 8"/><path d="M29 14l8 8-8 8"/><path class="a" d="M25 10l-6 24"/></svg>
+        <span class="mono">Software</span>
+        <h3>App development</h3>
+        <p>Custom apps for the jobs your business repeats every day.</p>
+        <ul>
+          <li>Order and booking apps</li>
+          <li>Stock and sales tracking</li>
+          <li>Web apps that run on any phone</li>
+          <li>Admin dashboards</li>
+          <li>Updates and support after launch</li>
+        </ul>
+        <p class="deliver mono">Delivered as an app you can test and sign off</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="process" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mono">How we work</span>
+      <h2 class="display">From first message to final file.</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Brief</h3><p>Send your business name, what you sell and where it will run: YouTube, TikTok, Instagram, a poster or a website. A WhatsApp message is enough.</p></li>
+      <li><h3>Draft</h3><p>We send a first concept, script or layout so you can react to something real instead of a description.</p></li>
+      <li><h3>Refine</h3><p>You tell us what to change. We revise until it fits your business.</p></li>
+      <li><h3>Deliver</h3><p>You receive final files, ready to publish, print or launch.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="sec-head" style="margin:0">
+      <span class="mono">About YCH</span>
+      <h2 class="display">A studio you can walk into.</h2>
+      <p>Yabtech Creative Hub works from Falali Plaza in Minna. Come in with a rough idea, a sketch or an old logo and we will turn it into something you can use. If you are not in town, we work the same way over WhatsApp, phone and email.</p>
+    </div>
+    <dl class="facts">
+      <div><dt class="mono">Studio</dt><dd>Falali Plaza, around Mobil, Minna, Niger State, Nigeria</dd></div>
+      <div><dt class="mono">Good fit</dt><dd>Brands, shops, creators, schools, churches, events and start-ups</dd></div>
+      <div><dt class="mono">We do</dt><dd>AI video, UGC ads, YouTube automation training, graphic design, web design and apps</dd></div>
+      <div><dt class="mono">Reach us</dt><dd>WhatsApp, phone or email</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section id="faq" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="mono">Questions</span>
+      <h2 class="display">Before you message us.</h2>
+    </div>
+    <div class="faq">
+      <details><summary>What do I need to get started?</summary><p>Your business name, a short description of what you sell, and any logo or colours you already use. If you have none of these, we start from the brief.</p></details>
+      <details><summary>Is the video really made by AI?</summary><p>We use AI tools for visuals, voice and editing steps. A person plans, directs and checks every video before it reaches you. We tell you which parts are AI-generated so you can label them where a platform asks.</p></details>
+      <details><summary>Which file formats will I receive?</summary><p>Designs come as PNG, JPG and PDF, with SVG for logos. Videos come as MP4 in 16:9 and 9:16, and ads in the sizes you need. Websites go live on your own domain.</p></details>
+      <details><summary>Will YouTube automation make me money?</summary><p>We teach the workflow, the tools and the channel strategy. Results depend on your niche, your consistency and the quality of your videos, so we do not promise views or income.</p></details>
+      <details><summary>Do you work with clients outside Minna?</summary><p>Yes. Most of the process runs on WhatsApp and email, so location is not a barrier.</p></details>
+      <details><summary>How do I ask for a quote?</summary><p>Use the form below or message us on WhatsApp with what you need. We reply with a plan and a price.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="sec-head" style="margin:0">
+        <span class="mono">Contact</span>
+        <h2 class="display">Tell us what you need.</h2>
+        <p>The form writes your message for you. Choose WhatsApp or email and send it from your own phone.</p>
+      </div>
+      <ul class="reach">
+        <li><div><span class="k mono">WhatsApp and phone</span><span class="v" id="v-phone">+234 814 7017 603</span></div><button class="copy" type="button" data-copy="+234 814 7017 603" data-target="v-phone">Copy</button></li>
+        <li><div><span class="k mono">Email</span><span class="v" id="v-mail">Yabtech10@gmail.com</span></div><button class="copy" type="button" data-copy="Yabtech10@gmail.com" data-target="v-mail">Copy</button></li>
+        <li><div><span class="k mono">Studio</span><span class="v">Falali Plaza, around Mobil, Minna, Niger State, Nigeria</span></div></li>
+      </ul>
+    </div>
+
+    <form id="brief" class="brief" autocomplete="on">
+      <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name"></div>
+      <div class="field"><label for="f-svc">What do you need?</label>
+        <select id="f-svc" name="service">
+          <option value="an AI video">AI video</option>
+          <option value="UGC ads">UGC ads</option>
+          <option value="YouTube automation training">YouTube automation training</option>
+          <option value="a logo or brand identity">Logo or brand identity</option>
+          <option value="flyers, posters or social media posts">Flyers, posters or social media posts</option>
+          <option value="a website">A website</option>
+          <option value="an app">An app</option>
+          <option value="something else">Something else</option>
+        </select>
+      </div>
+      <div class="field"><label for="f-msg">Tell us a little more</label><textarea id="f-msg" name="message" rows="5" placeholder="Business name, what you sell, where it will run"></textarea></div>
+      <div class="row">
+        <a id="wa" class="btn btn-primary" href="https://wa.me/2348147017603" target="_blank" rel="noopener">Send on WhatsApp</a>
+        <a id="mail" class="btn" href="mailto:Yabtech10@gmail.com">Send by email</a>
+      </div>
+      <p class="hint">Your message opens in WhatsApp or your email app. Nothing is sent until you press send there.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top" aria-label="Yabtech Creative Hub, back to top">
+      <svg class="lg" viewBox="0 0 48 48" aria-hidden="true"><path class="lg-hex" d="M24 3L42.2 13.5V34.5L24 45L5.8 34.5V13.5Z"/><path class="lg-y" d="M13.5 14L24 25L34.5 14M24 25V38"/><circle class="lg-n" cx="13.5" cy="14" r="2.8"/><circle class="lg-n" cx="34.5" cy="14" r="2.8"/><circle class="lg-n" cx="24" cy="38" r="2.8"/><circle class="lg-c" cx="24" cy="25" r="3.8"/></svg>
+      <span class="txt"><svg class="lg-w" viewBox="-3 -3 87 34" aria-label="YCH" role="img"><path d="M0 0L11 15L22 0M11 15V28"/><path d="M51 6.5A13 13 0 1 0 51 21.5"/><path d="M58 0V28M80 0V28M58 14H80"/></svg><span class="nm">&copy; <span id="yr">2026</span> Yabtech Creative Hub</span></span>
+    </a>
+    <p>Minna, Niger State, Nigeria &middot; <a href="#top">Back to top</a></p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var NUM='2348147017603', MAIL='Yabtech10@gmail.com';
+  var form=document.getElementById('brief'), nm=document.getElementById('f-name'),
+      sv=document.getElementById('f-svc'), ms=document.getElementById('f-msg'),
+      wa=document.getElementById('wa'), ml=document.getElementById('mail');
+  function body(){
+    var n=nm.value.trim(), m=ms.value.trim();
+    var t='Hello Yabtech Creative Hub, '+(n?'my name is '+n+'. ':'')+'I need '+sv.value+'.';
+    return m? t+'\n\n'+m : t;
+  }
+  function update(){
+    var b=body();
+    wa.href='https://wa.me/'+NUM+'?text='+encodeURIComponent(b);
+    ml.href='mailto:'+MAIL+'?subject='+encodeURIComponent('Project enquiry: '+sv.value)+'&body='+encodeURIComponent(b);
+  }
+  form.addEventListener('input',update);
+  form.addEventListener('change',update);
+  form.addEventListener('submit',function(e){e.preventDefault();});
+  update();
+
+  function flash(btn,txt){
+    var old=btn.textContent; btn.textContent=txt;
+    setTimeout(function(){btn.textContent=old;},1600);
+  }
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var v=btn.getAttribute('data-copy');
+      var ok=function(){flash(btn,'Copied');};
+      var fallback=function(){
+        var el=document.getElementById(btn.getAttribute('data-target'));
+        if(el){var r=document.createRange();r.selectNodeContents(el);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}
+        flash(btn,'Selected');
+      };
+      try{ navigator.clipboard.writeText(v).then(ok,fallback); }catch(e){ fallback(); }
+    });
+  });
+  try{document.getElementById('yr').textContent=new Date().getFullYear();}catch(e){}
+})();
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Yabtech Creative Hub","alternateName":"YCH","url":"https://yabtech.site/",
+ "description":"Digital agency offering AI video, UGC ads, YouTube automation training, graphic design, web design and app development.",
+ "telephone":"+2348147017603","email":"Yabtech10@gmail.com",
+ "address":{"@type":"PostalAddress","streetAddress":"Falali Plaza, around Mobil","addressLocality":"Minna","addressRegion":"Niger State","addressCountry":"NG"},
+ "areaServed":"Nigeria","knowsAbout":["AI video","UGC ads","YouTube automation","Graphic design","Web design","App development"]}
+</script>
+
+</body>
+</html>
