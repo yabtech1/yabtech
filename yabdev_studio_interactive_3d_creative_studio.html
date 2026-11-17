@@ -1,0 +1,1746 @@
+<!doctype html>
+<html lang="en" data-theme="violet">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Yabdev Studio — Creative Engineering, AI Video & Digital Products</title>
+  <meta name="description" content="Yabdev Studio is a creative digital studio in Minna, Nigeria: AI video, UGC ads, graphic design, web design, app development, and The AI Creator Protocol.">
+  <meta name="theme-color" content="#05060f">
+  
+  <!-- Google Fonts: Syne, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Three.js r128 for WebGL 3D Interactive Canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    /* ==========================================================================
+       DESIGN TOKENS & LIVE NON-GREEN BRAND PALETTES
+       ========================================================================== */
+    :root,
+    [data-theme="violet"] {
+      color-scheme: dark;
+      --bg: #05060f;
+      --surface: #0b0d1e;
+      --surface-2: #121631;
+      --surface-glass: rgba(11, 13, 30, 0.72);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-bright: rgba(139, 92, 246, 0.45);
+      --ink: #f4f6fb;
+      --muted: #949ec2;
+      --accent: #8b5cf6;       /* Electric Violet */
+      --accent-2: #ff5e3a;     /* Molten Coral */
+      --accent-glow: rgba(139, 92, 246, 0.38);
+      --accent-ink: #ffffff;
+      --three-primary: 0x8b5cf6;
+      --three-secondary: 0xff5e3a;
+    }
+
+    [data-theme="amber"] {
+      --bg: #08060c;
+      --surface: #130f1c;
+      --surface-2: #1d162b;
+      --surface-glass: rgba(19, 15, 28, 0.75);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-bright: rgba(249, 115, 22, 0.45);
+      --ink: #faf6f0;
+      --muted: #b0a3bd;
+      --accent: #f97316;       /* Cyber Amber */
+      --accent-2: #ec4899;     /* Hyper Magenta */
+      --accent-glow: rgba(249, 115, 22, 0.35);
+      --accent-ink: #090502;
+      --three-primary: 0xf97316;
+      --three-secondary: 0xec4899;
+    }
+
+    [data-theme="crimson"] {
+      --bg: #080509;
+      --surface: #140b18;
+      --surface-2: #211228;
+      --surface-glass: rgba(20, 11, 24, 0.75);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-bright: rgba(244, 63, 94, 0.45);
+      --ink: #fdf2f8;
+      --muted: #b59eb0;
+      --accent: #f43f5e;       /* Solar Crimson */
+      --accent-2: #a855f7;     /* Neon Purple */
+      --accent-glow: rgba(244, 63, 94, 0.38);
+      --accent-ink: #ffffff;
+      --three-primary: 0xf43f5e;
+      --three-secondary: 0xa855f7;
+    }
+
+    [data-theme="cyan"] {
+      --bg: #040814;
+      --surface: #0a1126;
+      --surface-2: #101b3b;
+      --surface-glass: rgba(10, 17, 38, 0.75);
+      --line: rgba(255, 255, 255, 0.09);
+      --line-bright: rgba(56, 189, 248, 0.45);
+      --ink: #f0f9ff;
+      --muted: #93adc8;
+      --accent: #38bdf8;       /* Hyper Cyan */
+      --accent-2: #6366f1;     /* Electric Indigo */
+      --accent-glow: rgba(56, 189, 248, 0.36);
+      --accent-ink: #03111c;
+      --three-primary: 0x38bdf8;
+      --three-secondary: 0x6366f1;
+    }
+
+    :root {
+      --font-head: "Syne", system-ui, -apple-system, sans-serif;
+      --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      overflow-x: clip;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--ink);
+      overflow-x: clip;
+      selection-background-color: var(--accent);
+      transition: background-color 0.5s var(--ease);
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    h1, h2, h3, h4, .font-display {
+      font-family: var(--font-head);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+    }
+
+    .font-mono-tech {
+      font-family: var(--font-mono);
+    }
+
+    /* Fixed 3D WebGL Background Canvas */
+    #webgl-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Subtle noise film grain overlay */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: radial-gradient(rgba(255,255,255,0.6) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    /* Main Content Wrapper above WebGL */
+    .content-layer {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Custom Magnetic Cursor */
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid var(--accent);
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s var(--ease), height 0.3s var(--ease), background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #fff;
+      backdrop-filter: blur(2px);
+    }
+    #custom-cursor.cursor-active {
+      width: 68px;
+      height: 68px;
+      background-color: var(--accent);
+      color: var(--accent-ink);
+      border-color: transparent;
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+    @media (pointer: coarse), (max-width: 768px) {
+      #custom-cursor { display: none !important; }
+    }
+
+    /* Glassmorphic Header & Surfaces */
+    .glass-bar {
+      background: var(--surface-glass);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--line);
+    }
+
+    /* 3D Perspective Tilt Cards */
+    .tilt-card {
+      position: relative;
+      transform-style: preserve-3d;
+      perspective: 1100px;
+      background: linear-gradient(155deg, var(--surface-2) 0%, var(--surface) 100%);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      transition: transform 0.18s ease-out, border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+      overflow: hidden;
+    }
+    .tilt-card:hover {
+      border-color: var(--line-bright);
+      box-shadow: 0 24px 60px -20px var(--accent-glow);
+    }
+    .tilt-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(480px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.09), transparent 45%);
+      opacity: 0;
+      transition: opacity 0.3s var(--ease);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .tilt-card:hover::before {
+      opacity: 1;
+    }
+    .tilt-inner {
+      transform: translateZ(24px);
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 10px 30px -10px var(--accent-glow);
+      cursor: pointer;
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), filter 0.25s var(--ease);
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 16px 40px -8px var(--accent-glow);
+      filter: brightness(1.08);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--font-head);
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 24px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      cursor: pointer;
+      transition: all 0.25s var(--ease);
+      text-decoration: none;
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-2px);
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+      background: linear-gradient(135deg, #ffffff 15%, var(--accent) 65%, var(--accent-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Infinite Marquee */
+    .marquee-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(11, 13, 30, 0.6);
+      backdrop-filter: blur(10px);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee-scroll 34s linear infinite;
+    }
+    .marquee-wrap:hover .marquee-track {
+      animation-play-state: paused;
+    }
+    @keyframes marquee-scroll {
+      to { transform: translateX(-50%); }
+    }
+
+    /* Interactive 3D Book Showcase */
+    .book-scene {
+      perspective: 1400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+    .book-3d {
+      width: 290px;
+      height: 390px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(-24deg) rotateX(10deg);
+      transition: transform 0.2s ease-out;
+      cursor: grab;
+    }
+    .book-front {
+      position: absolute;
+      inset: 0;
+      border-radius: 6px 16px 16px 6px;
+      background: linear-gradient(145deg, #161936 0%, #070917 100%);
+      border: 1px solid rgba(255,255,255,0.22);
+      transform: translateZ(26px);
+      overflow: hidden;
+      box-shadow: 0 30px 70px -15px rgba(0,0,0,0.85), 0 0 40px var(--accent-glow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .book-spine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 52px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent) 0%, #1a103c 100%);
+      transform: rotateY(-90deg) translateZ(26px);
+      border-radius: 4px 0 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      font-weight: 700;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .book-pages {
+      position: absolute;
+      top: 6px;
+      right: 0;
+      width: 48px;
+      height: calc(100% - 12px);
+      background: repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 2px, #cbd5e1 2px, #cbd5e1 4px);
+      transform: rotateY(90deg) translateZ(264px);
+    }
+    .book-back {
+      position: absolute;
+      inset: 0;
+      background: #090b1a;
+      border-radius: 16px 6px 6px 16px;
+      transform: translateZ(-26px) rotateY(180deg);
+      border: 1px solid var(--line);
+    }
+
+    /* Portfolio Item Aspect & Play Badge */
+    .work-card {
+      aspect-ratio: 4 / 5;
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      cursor: pointer;
+    }
+    .work-card img, .work-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.65s var(--ease), opacity 0.4s;
+    }
+    .work-card:hover img {
+      transform: scale(1.07);
+    }
+    /* Rich procedural art fallback when local files aren't mounted */
+    .proc-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at 20% 20%, var(--surface-2), var(--bg));
+      z-index: 0;
+    }
+    .work-card img:not(.err) + .proc-fallback {
+      opacity: 0;
+    }
+    .work-card.missing img {
+      display: none;
+    }
+
+    /* Scroll Reveal Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+      transition-delay: var(--d, 0s);
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Process Step Animated Bar */
+    .step-line {
+      position: relative;
+      height: 2px;
+      background: var(--line);
+      overflow: hidden;
+    }
+    .step-line::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1.2s var(--ease);
+    }
+    .reveal.in .step-line::after {
+      transform: scaleX(1);
+    }
+
+    /* Theme Dot Button */
+    .theme-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: transform 0.2s var(--ease), border-color 0.2s;
+    }
+    .theme-dot[aria-pressed="true"] {
+      transform: scale(1.22);
+      border-color: #ffffff;
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    /* Modal Dialog */
+    dialog#lightbox {
+      border: 1px solid var(--line-bright);
+      border-radius: 24px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0;
+      width: min(92vw, 980px);
+      max-height: 90vh;
+      box-shadow: 0 30px 100px rgba(0,0,0,0.85);
+    }
+    dialog#lightbox::backdrop {
+      background: rgba(4, 5, 14, 0.88);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Magnetic Cursor -->
+  <div id="custom-cursor" aria-hidden="true"></div>
+
+  <!-- Interactive Three.js 3D WebGL Background -->
+  <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- Main Content Layer -->
+  <div class="content-layer" id="top">
+
+    <!-- ======================================================================
+         STICKY GLASS HEADER WITH LIVE BRAND COLOR SWITCHER
+         ====================================================================== -->
+    <header class="sticky top-3 z-50 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto glass-bar rounded-full px-4 sm:px-6 py-3 flex items-center justify-between gap-4 shadow-2xl">
+        
+        <!-- Brand Lockup (Updated SVG using var(--accent) instead of green) -->
+        <a href="#top" class="flex items-center gap-3 text-decoration-none group" data-cursor="HOME">
+          <svg class="w-9 h-9 transition-transform duration-300 group-hover:rotate-12" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M12 12 32 34" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M32 34V48" stroke="#ffffff" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M52 12 32 34" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="32" cy="57" r="4.5" fill="var(--accent-2)"/>
+          </svg>
+          <div class="flex flex-col">
+            <span class="font-display font-extrabold text-xl tracking-tight leading-none">yabdev</span>
+            <span class="font-mono-tech text-[9px] tracking-[0.38em] font-semibold mt-0.5" style="color: var(--accent)">STUDIO</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-[var(--muted)]" aria-label="Main Navigation">
+          <a href="#services" class="hover:text-white transition-colors">Services</a>
+          <a href="#work" class="hover:text-white transition-colors">Selected Work</a>
+          <a href="#protocol" class="hover:text-white transition-colors flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full animate-pulse" style="background: var(--accent-2)"></span>
+            AI Protocol
+          </a>
+          <a href="#process" class="hover:text-white transition-colors">Process</a>
+          <a href="#ecosystem" class="hover:text-white transition-colors">Social Hub</a>
+          <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+        </nav>
+
+        <!-- Live Brand Vibe Switcher + CTA -->
+        <div class="flex items-center gap-3">
+          <!-- Non-Green Studio Palette Picker -->
+          <div class="flex items-center gap-1.5 bg-black/40 border border-white/10 rounded-full px-2.5 py-1.5" role="group" aria-label="Brand Theme Switcher">
+            <span class="hidden sm:inline font-mono-tech text-[10px] uppercase tracking-wider text-[var(--muted)] mr-1">Vibe:</span>
+            <button type="button" class="theme-dot" style="background: linear-gradient(135deg, #8b5cf6, #ff5e3a); color:#8b5cf6" data-set-theme="violet" aria-pressed="true" title="Electric Violet & Coral"></button>
+            <button type="button" class="theme-dot" style="background: linear-gradient(135deg, #f97316, #ec4899); color:#f97316" data-set-theme="amber" aria-pressed="false" title="Cyber Amber & Magenta"></button>
+            <button type="button" class="theme-dot" style="background: linear-gradient(135deg, #f43f5e, #a855f7); color:#f43f5e" data-set-theme="crimson" aria-pressed="false" title="Solar Crimson & Purple"></button>
+            <button type="button" class="theme-dot" style="background: linear-gradient(135deg, #38bdf8, #6366f1); color:#38bdf8" data-set-theme="cyan" aria-pressed="false" title="Hyper Cyan & Indigo"></button>
+          </div>
+
+          <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="hidden sm:inline-flex btn-ghost !py-2 !px-4 !text-xs font-mono-tech uppercase tracking-wider" data-cursor="WHOP">
+            <i class="ph-fill ph-sparkle text-sm" style="color: var(--accent)"></i> Whop Hub
+          </a>
+
+          <a href="https://wa.me/message/FKLOJM3GV2QQE1" target="_blank" rel="noopener" class="hidden md:inline-flex btn-primary !py-2.5 !px-5 !text-sm" data-cursor="CHAT">
+            <i class="ph-bold ph-whatsapp-logo text-base"></i> Start Project
+          </a>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobile-menu-btn" type="button" class="lg:hidden w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white" aria-expanded="false" aria-label="Toggle Menu">
+            <i class="ph-bold ph-list text-xl" id="menu-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-nav" class="hidden lg:hidden max-w-7xl mx-auto mt-2 glass-bar rounded-3xl p-6 flex-col gap-4 shadow-2xl">
+        <div class="grid grid-cols-2 gap-3 text-base font-display font-bold">
+          <a href="#services" class="p-3 rounded-xl bg-white/5 hover:bg-white/10">01. Services</a>
+          <a href="#work" class="p-3 rounded-xl bg-white/5 hover:bg-white/10">02. Portfolio</a>
+          <a href="#protocol" class="p-3 rounded-xl bg-white/5 hover:bg-white/10" style="color: var(--accent)">03. AI Protocol</a>
+          <a href="#process" class="p-3 rounded-xl bg-white/5 hover:bg-white/10">04. Process</a>
+          <a href="#ecosystem" class="p-3 rounded-xl bg-white/5 hover:bg-white/10">05. Social Hub</a>
+          <a href="#contact" class="p-3 rounded-xl bg-white/5 hover:bg-white/10">06. Contact</a>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-3 border-t border-white/10">
+          <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" class="btn-primary flex-1 !text-xs">Get AI Protocol Book</a>
+          <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="btn-ghost flex-1 !text-xs">Join Whop Studio</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         HERO SECTION WITH 3D INTERACTIVE SHOWREEL STAGE
+         ====================================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-20 md:py-24 grid lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Left Column: Copy & CTAs -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+          <span class="w-2 h-2 rounded-full animate-ping" style="background: var(--accent)"></span>
+          <span class="font-mono-tech text-xs uppercase tracking-[0.16em] text-[var(--ink)]">Creative Digital Studio &middot; Minna, Nigeria</span>
+        </div>
+
+        <h1 class="font-display font-extrabold text-4xl sm:text-6xl xl:text-[68px] leading-[1.03] tracking-tight">
+          We engineer <span class="text-gradient">AI cinema,</span> bold brands &amp; apps that command attention.
+        </h1>
+
+        <p class="text-base sm:text-lg text-[var(--muted)] max-w-2xl leading-relaxed">
+          Yabdev Studio blends high-craft visual direction with generative AI workflows, high-converting UGC ads, bespoke web design, and mobile apps—plus creator systems to scale your own automated channels.
+        </p>
+
+        <!-- Primary Action Row -->
+        <div class="flex flex-wrap items-center gap-3.5 pt-2">
+          <a href="#work" class="btn-primary" data-cursor="EXPLORE">
+            <span>Explore Selected Work</span>
+            <i class="ph-bold ph-arrow-down-right"></i>
+          </a>
+          <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" class="btn-ghost" data-cursor="BOOK">
+            <i class="ph-duotone ph-book-open-text text-lg" style="color: var(--accent)"></i>
+            <span>The AI Creator Protocol</span>
+          </a>
+          <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="btn-ghost" data-cursor="JOIN">
+            <i class="ph-duotone ph-Exclude text-lg" style="color: var(--accent-2)"></i>
+            <span>Yabtech Whop</span>
+          </a>
+        </div>
+
+        <!-- Quick Social Bar in Hero -->
+        <div class="pt-4 flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono-tech text-[var(--muted)]">
+          <span class="uppercase tracking-widest text-white/50 mr-1">Connect:</span>
+          <a href="https://www.linkedin.com/in/yabtech" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-linkedin-logo" style="color: var(--accent)"></i> LinkedIn
+          </a>
+          <a href="https://youtube.com/@yabdevstudio?si=2-Kww_cTvrC5g8b5" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-youtube-logo text-red-400"></i> YouTube
+          </a>
+          <a href="https://www.instagram.com/yabdevstudio?psln=MXQ2Zmoya3hiazc3bQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-instagram-logo text-pink-400"></i> Instagram
+          </a>
+          <a href="https://x.com/musteelifestyle" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-x-logo text-white"></i> @musteelifestyle
+          </a>
+          <a href="https://www.tiktok.com/@yabdevstudio" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-tiktok-logo" style="color: var(--accent-2)"></i> @yabdevstudio
+          </a>
+          <a href="https://www.tiktok.com/@yabtech1" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 hover:text-white border border-white/10 transition flex items-center gap-1.5">
+            <i class="ph-fill ph-tiktok-logo" style="color: var(--accent)"></i> @yabtech1
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: 3D Tilt Showreel Device & Interactive HUD -->
+      <div class="lg:col-span-5">
+        <div class="tilt-card p-3 sm:p-4 rounded-3xl relative group" data-tilt data-cursor="3D REEL">
+          
+          <!-- Top Studio Telemetry Bar -->
+          <div class="flex items-center justify-between px-3 pb-3 text-xs font-mono-tech text-[var(--muted)]">
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full" style="background: var(--accent)"></span>
+              <span class="ml-1 text-white/80">YABDEV_SHOWREEL.MP4</span>
+            </span>
+            <span class="px-2 py-0.5 rounded bg-white/10 text-[10px] text-white">60 FPS // 3D</span>
+          </div>
+
+          <!-- Video / Procedural Shader Screen -->
+          <div class="relative rounded-2xl overflow-hidden aspect-[16/11] bg-[#060814] border border-white/10">
+            <!-- Attempts to load local video/yabdev-video4.mp4, falls back to animated procedural canvas -->
+            <video id="hero-video" autoplay muted loop playsinline preload="metadata" poster="img/yabdev-poster4.jpg" src="video/yabdev-video4.mp4" class="relative z-10 w-full h-full object-cover"></video>
+            
+            <!-- Animated Generative Fallback Canvas inside screen -->
+            <div class="absolute inset-0 z-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#121636] via-[#090b1c] to-[#1f1129]">
+              <div class="w-20 h-20 rounded-2xl border border-white/20 flex items-center justify-center mb-3 shadow-2xl" style="background: var(--accent-glow)">
+                <i class="ph-duotone ph-cube-focus text-4xl text-white animate-spin" style="animation-duration: 12s;"></i>
+              </div>
+              <p class="font-display font-bold text-lg text-white">AI Cinema &amp; Creative Systems</p>
+              <p class="font-mono-tech text-xs text-[var(--muted)] mt-1">Interactive WebGL Studio Preview</p>
+            </div>
+
+            <!-- Glassmorphic Overlay HUD inside video -->
+            <div class="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-black/65 backdrop-blur-md border border-white/15">
+              <div>
+                <p class="font-mono-tech text-[10px] uppercase tracking-widest" style="color: var(--accent)">Active Pipeline</p>
+                <p class="font-display font-bold text-xs sm:text-sm text-white">AI Video &bull; UGC Ads &bull; Full-Stack Apps</p>
+              </div>
+              <a href="#work" class="w-9 h-9 rounded-full flex items-center justify-center text-white transition-transform group-hover:scale-110" style="background: var(--accent)">
+                <i class="ph-fill ph-play text-sm"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Floating 3D Depth Badges -->
+          <div class="tilt-inner grid grid-cols-3 gap-2 pt-3 text-center">
+            <div class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+              <p class="font-display font-extrabold text-lg sm:text-xl text-white">6+</p>
+              <p class="font-mono-tech text-[10px] uppercase text-[var(--muted)]">Core Disciplines</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+              <p class="font-display font-extrabold text-lg sm:text-xl" style="color: var(--accent)">50+</p>
+              <p class="font-mono-tech text-[10px] uppercase text-[var(--muted)]">AI Prompts</p>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
+              <p class="font-display font-extrabold text-lg sm:text-xl" style="color: var(--accent-2)">100%</p>
+              <p class="font-mono-tech text-[10px] uppercase text-[var(--muted)]">Custom Craft</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         INFINITE CAPABILITIES MARQUEE
+         ====================================================================== -->
+    <div class="marquee-wrap py-4" aria-hidden="true">
+      <div class="marquee-track flex items-center gap-8 font-display font-bold text-lg sm:text-2xl tracking-tight">
+        <span class="text-white/90">AI CINEMA &amp; SHORTS</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">HIGH-CONVERTING UGC ADS</span>
+        <span style="color: var(--accent-2)">&✦</span>
+        <span class="text-white/90">THE AI CREATOR PROTOCOL</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">WEB &amp; MOBILE APPS</span>
+        <span style="color: var(--accent-2)">&✦</span>
+        <span class="text-white/90">BRAND IDENTITY &amp; DESIGN</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">YOUTUBE AUTOMATION TRAINING</span>
+        <span style="color: var(--accent-2)">&✦</span>
+        <!-- Duplicated for seamless loop -->
+        <span class="text-white/90">AI CINEMA &amp; SHORTS</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">HIGH-CONVERTING UGC ADS</span>
+        <span style="color: var(--accent-2)">&✦</span>
+        <span class="text-white/90">THE AI CREATOR PROTOCOL</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">WEB &amp; MOBILE APPS</span>
+        <span style="color: var(--accent-2)">&✦</span>
+        <span class="text-white/90">BRAND IDENTITY &amp; DESIGN</span>
+        <span style="color: var(--accent)">&✦</span>
+        <span class="text-white/90">YOUTUBE AUTOMATION TRAINING</span>
+        <span style="color: var(--accent-2)">&✦</span>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         SERVICES SECTION (6 3D TILT CARDS)
+         ====================================================================== -->
+    <section id="services" class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 reveal">
+        <div>
+          <p class="font-mono-tech text-xs uppercase tracking-[0.2em] mb-3" style="color: var(--accent)">// 01 &mdash; Capabilities</p>
+          <h2 class="font-display font-extrabold text-3xl sm:text-5xl">Six services, one flagship studio.</h2>
+        </div>
+        <p class="text-[var(--muted)] max-w-md text-sm sm:text-base">
+          From a single viral AI short to a complete brand identity, web platform, or mobile application—we handle both the creative direction and the technical build.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Service 1 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" data-tilt data-cursor="AI VIDEO">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-film-strip text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">01 / Motion</span>
+            <h3 class="font-display font-bold text-2xl">AI Video Production</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              Cinematic AI-generated commercials, storytelling clips, and animated shorts crafted for brands and visionary creators.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>Runway / Sora / Custom</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+
+        <!-- Service 2 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" style="--d:0.06s" data-tilt data-cursor="UGC ADS">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-device-mobile-camera text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">02 / Performance</span>
+            <h3 class="font-display font-bold text-2xl">UGC Ads &amp; Reels</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              High-retention vertical ads with engaging presenters, dynamic product shots, and kinetic captions engineered for TikTok &amp; Reels.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>9:16 Conversion Ready</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+
+        <!-- Service 3 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" style="--d:0.12s" data-tilt data-cursor="TRAINING">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-youtube-logo text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">03 / Academy</span>
+            <h3 class="font-display font-bold text-2xl">YouTube Automation Training</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              Hands-on mentorship and repeatable systems for building, scripting, and scaling profitable faceless YouTube channels with AI tools.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>Whop &amp; 1-on-1 Coaching</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+
+        <!-- Service 4 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" data-tilt data-cursor="DESIGN">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-pen-nib text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">04 / Identity</span>
+            <h3 class="font-display font-bold text-2xl">Graphic &amp; Brand Design</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              Distinctive logos, campaign flyers, posters, social carousels, and album/book cover art that hold a modern brand together.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>Visual Systems &amp; Print</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+
+        <!-- Service 5 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" style="--d:0.06s" data-tilt data-cursor="WEB">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-globe-hemisphere-west text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">05 / Interactive</span>
+            <h3 class="font-display font-bold text-2xl">Web Design &amp; 3D Sites</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              Fast, responsive, and interactive websites built around your business goals with modern animations and clean architecture.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>Next-Gen UI / WebGL</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+
+        <!-- Service 6 -->
+        <article class="tilt-card p-7 flex flex-col justify-between gap-6 reveal" style="--d:0.12s" data-tilt data-cursor="APPS">
+          <div class="tilt-inner space-y-4">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-duotone ph-code-block text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[11px] uppercase tracking-widest text-[var(--muted)]">06 / Engineering</span>
+            <h3 class="font-display font-bold text-2xl">Mobile App Development</h3>
+            <p class="text-[var(--muted)] text-sm leading-relaxed">
+              iOS and Android mobile applications from initial concept and UI/UX prototyping to production launch—built to be intuitive and fast.
+            </p>
+          </div>
+          <div class="tilt-inner pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono-tech" style="color: var(--accent)">
+            <span>Cross-Platform Native</span>
+            <i class="ph-bold ph-arrow-up-right"></i>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SELECTED WORK PORTFOLIO GRID + LIGHTBOX
+         ====================================================================== -->
+    <section id="work" class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 reveal">
+        <div>
+          <p class="font-mono-tech text-xs uppercase tracking-[0.2em] mb-3" style="color: var(--accent)">// 02 &mdash; Selected Archive</p>
+          <h2 class="font-display font-extrabold text-3xl sm:text-5xl">Recent Studio Projects.</h2>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap gap-2" role="group" aria-label="Filter Portfolio">
+          <button type="button" class="filter-btn px-4 py-2 rounded-full text-xs font-mono-tech uppercase tracking-wider border transition" data-filter="all" aria-pressed="true" style="background: var(--accent); color: #fff; border-color: var(--accent)">All (13)</button>
+          <button type="button" class="filter-btn px-4 py-2 rounded-full text-xs font-mono-tech uppercase tracking-wider border border-white/15 bg-white/5 text-[var(--muted)] hover:text-white transition" data-filter="video" aria-pressed="false">Video &amp; AI (5)</button>
+          <button type="button" class="filter-btn px-4 py-2 rounded-full text-xs font-mono-tech uppercase tracking-wider border border-white/15 bg-white/5 text-[var(--muted)] hover:text-white transition" data-filter="design" aria-pressed="false">Design &amp; Book (6)</button>
+          <button type="button" class="filter-btn px-4 py-2 rounded-full text-xs font-mono-tech uppercase tracking-wider border border-white/15 bg-white/5 text-[var(--muted)] hover:text-white transition" data-filter="web" aria-pressed="false">Web &amp; Apps (2)</button>
+        </div>
+      </div>
+
+      <!-- Dynamic Portfolio Grid -->
+      <div id="portfolio-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    </section>
+
+    <!-- ======================================================================
+         3D INTERACTIVE PRODUCT SHOWCASE: THE AI CREATOR PROTOCOL & WHOP HUB
+         ====================================================================== -->
+    <section id="protocol" class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
+      <div class="tilt-card p-6 sm:p-12 lg:p-16 rounded-3xl border border-white/15 relative overflow-hidden">
+        
+        <!-- Ambient Background Glow -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-30" style="background: var(--accent)"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full blur-3xl pointer-events-none opacity-25" style="background: var(--accent-2)"></div>
+
+        <div class="relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left: Interactive 3D Book Model -->
+          <div class="lg:col-span-5 flex flex-col items-center">
+            <div class="book-scene" id="book-interactive-area" data-cursor="TILT 3D">
+              <div class="book-3d" id="book-3d">
+                <div class="book-spine">THE AI CREATOR PROTOCOL &bull; YABDEV</div>
+                <div class="book-pages"></div>
+                <div class="book-back"></div>
+                <div class="book-front p-6 relative">
+                  <!-- Try loading real book cover image if present, with rich typographic overlay -->
+                  <img src="img/yabdev-book-front.jpg" alt="The AI Creator Protocol Cover" class="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-luminosity" onerror="this.style.display='none'">
+                  
+                  <div class="relative z-10 flex items-center justify-between">
+                    <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded bg-white/10 text-white border border-white/15">Creator Edition</span>
+                    <span class="font-mono-tech text-xs font-bold" style="color: var(--accent)">v2.6</span>
+                  </div>
+
+                  <div class="relative z-10 my-auto space-y-3">
+                    <p class="font-mono-tech text-[11px] uppercase tracking-[0.2em]" style="color: var(--accent-2)">Yabdev Studio Original</p>
+                    <h3 class="font-display font-extrabold text-3xl leading-none text-white">THE AI CREATOR PROTOCOL</h3>
+                    <p class="text-xs text-white/75 leading-relaxed">
+                      The Complete Editing System, 7-Day Content Sprint &amp; 50 High-Retention AI Prompts.
+                    </p>
+                  </div>
+
+                  <div class="relative z-10 pt-4 border-t border-white/15 flex items-center justify-between text-[11px] font-mono-tech text-white/80">
+                    <span>BY MUSTEE // YABTECH</span>
+                    <i class="ph-fill ph-seal-check text-base" style="color: var(--accent)"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="font-mono-tech text-[11px] text-[var(--muted)] mt-2 flex items-center gap-1.5">
+              <i class="ph-bold ph-hand-grabbing" style="color: var(--accent)"></i> Move cursor over book to inspect in 3D
+            </p>
+          </div>
+
+          <!-- Right: Product Details, Gumroad & Whop Ecosystem -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-mono-tech uppercase tracking-widest" style="color: var(--accent)">
+              <i class="ph-fill ph-lightning"></i> Digital Products &amp; Creator Academy
+            </div>
+
+            <h2 class="font-display font-extrabold text-3xl sm:text-5xl">
+              Master the exact AI workflow behind our studio.
+            </h2>
+
+            <p class="text-[var(--muted)] text-base sm:text-lg leading-relaxed">
+              We don’t just build for clients—we document our entire production pipeline. Grab our flagship handbook <strong class="text-white">The AI Creator Protocol</strong> on Gumroad or join the <strong class="text-white">Yabtech Studio Hub</strong> on Whop for direct mentorship and automation templates.
+            </p>
+
+            <!-- Feature Checklist -->
+            <div class="grid sm:grid-cols-2 gap-3 pt-2">
+              <div class="p-4 rounded-2xl bg-black/35 border border-white/10 flex items-start gap-3">
+                <i class="ph-fill ph-check-circle text-xl mt-0.5" style="color: var(--accent)"></i>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-white">50+ Battle-Tested AI Prompts</h4>
+                  <p class="text-xs text-[var(--muted)] mt-1">Copy-paste prompts for cinematic video generation, hooks, and scripts.</p>
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-black/35 border border-white/10 flex items-start gap-3">
+                <i class="ph-fill ph-check-circle text-xl mt-0.5" style="color: var(--accent-2)"></i>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-white">7-Day Content Sprint</h4>
+                  <p class="text-xs text-[var(--muted)] mt-1">Step-by-step blueprint to launch and automate your creator channel.</p>
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-black/35 border border-white/10 flex items-start gap-3">
+                <i class="ph-fill ph-check-circle text-xl mt-0.5" style="color: var(--accent)"></i>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-white">High-Retention Editing System</h4>
+                  <p class="text-xs text-[var(--muted)] mt-1">Pacing, sound design, and visual storytelling frameworks that hold viewers.</p>
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-black/35 border border-white/10 flex items-start gap-3">
+                <i class="ph-fill ph-check-circle text-xl mt-0.5" style="color: var(--accent-2)"></i>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-white">Whop Community Access</h4>
+                  <p class="text-xs text-[var(--muted)] mt-1">Live feedback, resource drops, and YouTube automation training.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Direct Purchase & Community Links -->
+            <div class="flex flex-wrap items-center gap-4 pt-4">
+              <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" class="btn-primary" data-cursor="GUMROAD">
+                <i class="ph-bold ph-shopping-bag-open text-lg"></i>
+                <span>Get Protocol on Gumroad</span>
+                <i class="ph-bold ph-arrow-up-right"></i>
+              </a>
+              <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="btn-ghost !border-white/25" data-cursor="WHOP HUB">
+                <i class="ph-bold ph-users-three text-lg" style="color: var(--accent-2)"></i>
+                <span>Join Yabtech Studio on Whop</span>
+                <i class="ph-bold ph-arrow-up-right"></i>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         HOW WE WORK (4-STEP PROCESS)
+         ====================================================================== -->
+    <section id="process" class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
+      <div class="max-w-2xl mb-14 reveal">
+        <p class="font-mono-tech text-xs uppercase tracking-[0.2em] mb-3" style="color: var(--accent)">// 03 &mdash; Studio Workflow</p>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl">From WhatsApp brief to final delivery.</h2>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="tilt-card p-6 reveal" data-tilt>
+          <div class="step-line mb-5"></div>
+          <span class="font-mono-tech text-xs font-bold px-2.5 py-1 rounded bg-white/5" style="color: var(--accent)">STEP 01</span>
+          <h3 class="font-display font-bold text-xl mt-4 mb-2">Brief &amp; Discovery</h3>
+          <p class="text-sm text-[var(--muted)]">Tell us what you need, your target audience, and your timeline. A quick WhatsApp message is enough to start.</p>
+        </div>
+
+        <div class="tilt-card p-6 reveal" style="--d:0.1s" data-tilt>
+          <div class="step-line mb-5"></div>
+          <span class="font-mono-tech text-xs font-bold px-2.5 py-1 rounded bg-white/5" style="color: var(--accent)">STEP 02</span>
+          <h3 class="font-display font-bold text-xl mt-4 mb-2">Scope &amp; Blueprint</h3>
+          <p class="text-sm text-[var(--muted)]">We align on creative direction, format, deliverables, and milestones before production begins.</p>
+        </div>
+
+        <div class="tilt-card p-6 reveal" style="--d:0.2s" data-tilt>
+          <div class="step-line mb-5"></div>
+          <span class="font-mono-tech text-xs font-bold px-2.5 py-1 rounded bg-white/5" style="color: var(--accent)">STEP 03</span>
+          <h3 class="font-display font-bold text-xl mt-4 mb-2">Create &amp; Build</h3>
+          <p class="text-sm text-[var(--muted)]">We generate, design, edit, or code your project—sharing early previews so you can steer with confidence.</p>
+        </div>
+
+        <div class="tilt-card p-6 reveal" style="--d:0.3s" data-tilt>
+          <div class="step-line mb-5"></div>
+          <span class="font-mono-tech text-xs font-bold px-2.5 py-1 rounded bg-white/5" style="color: var(--accent)">STEP 04</span>
+          <h3 class="font-display font-bold text-xl mt-4 mb-2">Launch &amp; Scale</h3>
+          <p class="text-sm text-[var(--muted)]">You receive production-ready files or live deployments ready to publish, plus revisions as agreed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SOCIAL & CREATOR ECOSYSTEM BENTO GRID (ALL 8 LINKS PROMINENTLY)
+         ====================================================================== -->
+    <section id="ecosystem" class="max-w-7xl mx-auto px-4 sm:px-6 py-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal">
+        <div>
+          <p class="font-mono-tech text-xs uppercase tracking-[0.2em] mb-3" style="color: var(--accent)">// 04 &mdash; Connected Network</p>
+          <h2 class="font-display font-extrabold text-3xl sm:text-5xl">The Yabdev &amp; Mustee Ecosystem.</h2>
+        </div>
+        <p class="text-[var(--muted)] max-w-md text-sm sm:text-base">
+          Follow our daily AI experiments, behind-the-scenes studio breakdowns, lifestyle updates, and creator tutorials across every platform.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        
+        <!-- 1. YouTube (@yabdevstudio) -->
+        <a href="https://youtube.com/@yabdevstudio?si=2-Kww_cTvrC5g8b5" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="WATCH">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400">
+              <i class="ph-fill ph-youtube-logo text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Subscribe</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-red-400">@yabdevstudio</p>
+            <h3 class="font-display font-bold text-xl mt-1">YouTube Channel</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">AI video tutorials, automation workflows &amp; studio showreels.</p>
+          </div>
+        </a>
+
+        <!-- 2. Instagram (@yabdevstudio) -->
+        <a href="https://www.instagram.com/yabdevstudio?psln=MXQ2Zmoya3hiazc3bQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="GRAM">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-pink-500/15 border border-pink-500/30 flex items-center justify-center text-pink-400">
+              <i class="ph-fill ph-instagram-logo text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Follow</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-pink-400">@yabdevstudio</p>
+            <h3 class="font-display font-bold text-xl mt-1">Instagram</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Visual design drops, reels, brand carousels &amp; studio life.</p>
+          </div>
+        </a>
+
+        <!-- 3. LinkedIn (yabtech) -->
+        <a href="https://www.linkedin.com/in/yabtech" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="CONNECT">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400">
+              <i class="ph-fill ph-linkedin-logo text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Network</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-sky-400">in/yabtech</p>
+            <h3 class="font-display font-bold text-xl mt-1">LinkedIn</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">B2B partnerships, tech leadership &amp; digital product case studies.</p>
+          </div>
+        </a>
+
+        <!-- 4. X / Twitter (@musteelifestyle) -->
+        <a href="https://x.com/musteelifestyle" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="POSTS">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white">
+              <i class="ph-fill ph-x-logo text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Follow X</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-white/80">@musteelifestyle</p>
+            <h3 class="font-display font-bold text-xl mt-1">Mustee Lifestyle</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Creator thoughts, AI threads, build-in-public updates &amp; lifestyle.</p>
+          </div>
+        </a>
+
+        <!-- 5. TikTok Studio (@yabdevstudio) -->
+        <a href="https://www.tiktok.com/@yabdevstudio" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="TIKTOK">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: var(--accent-glow)">
+              <i class="ph-fill ph-tiktok-logo text-2xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Studio</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs" style="color: var(--accent)">@yabdevstudio</p>
+            <h3 class="font-display font-bold text-xl mt-1">TikTok Studio</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Short-form AI video showcases, UGC ad breakdowns &amp; edits.</p>
+          </div>
+        </a>
+
+        <!-- 6. TikTok Mustee (@yabtech1) -->
+        <a href="https://www.tiktok.com/@yabtech1" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="MUSTEE">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center border border-white/15" style="background: rgba(255, 94, 58, 0.2)">
+              <i class="ph-fill ph-tiktok-logo text-2xl" style="color: var(--accent-2)"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-white/5 text-[var(--muted)] group-hover:text-white">Creator</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs" style="color: var(--accent-2)">Mustee (@yabtech1)</p>
+            <h3 class="font-display font-bold text-xl mt-1">Mustee on TikTok</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Tech tips, AI creator workflows, and personal behind-the-scenes.</p>
+          </div>
+        </a>
+
+        <!-- 7. Gumroad Store (The AI Creator Protocol) -->
+        <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="GUMROAD">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-fuchsia-500/15 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-300">
+              <i class="ph-fill ph-book-bookmark text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-200">Get Book</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-fuchsia-300">Gumroad Store</p>
+            <h3 class="font-display font-bold text-xl mt-1">The AI Creator Protocol</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Instant digital download of our complete creator system &amp; prompts.</p>
+          </div>
+        </a>
+
+        <!-- 8. Whop Hub (Yabtech Studio) -->
+        <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="tilt-card p-6 flex flex-col justify-between gap-6 group text-decoration-none" data-tilt data-cursor="WHOP">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-300">
+              <i class="ph-fill ph-crown-simple text-2xl"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-200">Join Hub</span>
+          </div>
+          <div>
+            <p class="font-mono-tech text-xs text-amber-300">Whop Portal</p>
+            <h3 class="font-display font-bold text-xl mt-1">Yabtech Studio Hub</h3>
+            <p class="text-xs text-[var(--muted)] mt-1.5">Join our private creator community, courses &amp; automation hub.</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         FAQ ACCORDION SECTION
+         ====================================================================== -->
+    <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 py-20">
+      <div class="text-center mb-12 reveal">
+        <p class="font-mono-tech text-xs uppercase tracking-[0.2em] mb-3" style="color: var(--accent)">// 05 &mdash; FAQ</p>
+        <h2 class="font-display font-extrabold text-3xl sm:text-5xl">Before you message us.</h2>
+      </div>
+
+      <div class="space-y-4 reveal">
+        <details class="tilt-card p-6 group" open>
+          <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg sm:text-xl list-none">
+            <span>What can Yabdev Studio make for me?</span>
+            <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-transform group-open:rotate-45" style="color: var(--accent)">+</span>
+          </summary>
+          <p class="text-[var(--muted)] text-sm sm:text-base mt-4 leading-relaxed">
+            We produce cinematic AI videos, vertical UGC-style ads, high-retention video edits, brand graphics, interactive websites, and mobile apps. If you're unsure which format best fits your goal, message us and we'll recommend the highest-leverage approach.
+          </p>
+        </details>
+
+        <details class="tilt-card p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg sm:text-xl list-none">
+            <span>How do I start a project with the studio?</span>
+            <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-transform group-open:rotate-45" style="color: var(--accent)">+</span>
+          </summary>
+          <p class="text-[var(--muted)] text-sm sm:text-base mt-4 leading-relaxed">
+            Click any WhatsApp button on this site or message <strong class="text-white">+234 814 7017 603</strong> with what you want to build, who it is for, and your target deadline. We reply promptly with clarifying questions or a clear project plan.
+          </p>
+        </details>
+
+        <details class="tilt-card p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg sm:text-xl list-none">
+            <span>Do you teach creators as well as build for clients?</span>
+            <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-transform group-open:rotate-45" style="color: var(--accent)">+</span>
+          </summary>
+          <p class="text-[var(--muted)] text-sm sm:text-base mt-4 leading-relaxed">
+            Yes! We offer hands-on YouTube automation training via our <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" class="underline text-white">Yabtech Studio Whop Hub</a>, and our book <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" class="underline text-white">The AI Creator Protocol</a> on Gumroad covers our complete editing system, a 7-day content sprint, and 50+ AI prompts.
+          </p>
+        </details>
+
+        <details class="tilt-card p-6 group">
+          <summary class="flex items-center justify-between cursor-pointer font-display font-bold text-lg sm:text-xl list-none">
+            <span>Where is Yabdev Studio located?</span>
+            <span class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-transform group-open:rotate-45" style="color: var(--accent)">+</span>
+          </summary>
+          <p class="text-[var(--muted)] text-sm sm:text-base mt-4 leading-relaxed">
+            Our physical studio is based at <strong class="text-white">Falali Plaza, around Mobil, Minna, Niger State, Nigeria</strong>, and we collaborate with creators and businesses worldwide.
+          </p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CONTACT SECTION & INTERACTIVE PROJECT BRIEF LAUNCHER
+         ====================================================================== -->
+    <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+      <div class="tilt-card p-8 sm:p-14 rounded-3xl border border-white/15 grid lg:grid-cols-12 gap-10 items-center">
+        
+        <div class="lg:col-span-7 space-y-6">
+          <p class="font-mono-tech text-xs uppercase tracking-[0.2em]" style="color: var(--accent)">// 06 &mdash; Initiate Collaboration</p>
+          <h2 class="font-display font-extrabold text-4xl sm:text-6xl leading-none">
+            Have something bold to make?
+          </h2>
+          <p class="text-[var(--muted)] text-base sm:text-lg max-w-xl">
+            Select your project type below to pre-fill a direct studio brief on WhatsApp, or reach out via email or phone.
+          </p>
+
+          <!-- Interactive Service Selector Chips for Instant WhatsApp Brief -->
+          <div class="space-y-2.5 pt-2">
+            <label class="block font-mono-tech text-xs uppercase tracking-wider text-white/70">1. Select service interest:</label>
+            <div class="flex flex-wrap gap-2" id="brief-chips">
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/10 text-white" data-service="AI Video Production">AI Video</button>
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/5 text-[var(--muted)]" data-service="UGC Ads">UGC Ads</button>
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/5 text-[var(--muted)]" data-service="Web Design">Website</button>
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/5 text-[var(--muted)]" data-service="Mobile App">Mobile App</button>
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/5 text-[var(--muted)]" data-service="Brand & Graphic Design">Branding</button>
+              <button type="button" class="brief-chip px-3.5 py-2 rounded-xl text-xs font-mono-tech border border-white/15 bg-white/5 text-[var(--muted)]" data-service="YouTube Automation Training">YT Training</button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-4 pt-3">
+            <a id="whatsapp-brief-link" href="https://wa.me/message/FKLOJM3GV2QQE1" target="_blank" rel="noopener" class="btn-primary" data-cursor="WHATSAPP">
+              <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+              <span>Message on WhatsApp</span>
+            </a>
+            <a href="mailto:Yabtech10@gmail.com" class="btn-ghost" data-cursor="EMAIL">
+              <i class="ph-bold ph-envelope-simple text-lg"></i>
+              <span>Yabtech10@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Studio Coordinates Card -->
+        <div class="lg:col-span-5 space-y-5 bg-black/40 p-6 sm:p-8 rounded-2xl border border-white/10">
+          <div class="pb-4 border-b border-white/10 flex items-center justify-between">
+            <div>
+              <small class="font-mono-tech text-[11px] uppercase tracking-widest block" style="color: var(--accent)">Phone &amp; WhatsApp</small>
+              <a href="tel:+2348147017603" class="font-display font-bold text-lg sm:text-xl text-white hover:underline mt-0.5 block">+234 814 7017 603</a>
+            </div>
+            <button type="button" id="copy-phone-btn" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 font-mono-tech text-xs text-[var(--muted)] hover:text-white transition">
+              Copy
+            </button>
+          </div>
+
+          <div class="pb-4 border-b border-white/10 flex items-center justify-between">
+            <div>
+              <small class="font-mono-tech text-[11px] uppercase tracking-widest block" style="color: var(--accent)">Direct Email</small>
+              <a href="mailto:Yabtech10@gmail.com" class="font-display font-bold text-lg sm:text-xl text-white hover:underline mt-0.5 block">Yabtech10@gmail.com</a>
+            </div>
+            <button type="button" id="copy-email-btn" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 font-mono-tech text-xs text-[var(--muted)] hover:text-white transition">
+              Copy
+            </button>
+          </div>
+
+          <div>
+            <small class="font-mono-tech text-[11px] uppercase tracking-widest block" style="color: var(--accent-2)">Studio HQ</small>
+            <p class="font-display font-semibold text-base text-white mt-1">
+              Falali Plaza, around Mobil, Minna, Niger State, Nigeria
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         FOOTER
+         ====================================================================== -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-16 border-t border-white/10 text-sm text-[var(--muted)]">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        
+        <a href="#top" class="flex items-center gap-3 text-decoration-none text-white">
+          <svg class="w-8 h-8" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M12 12 32 34" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M32 34V48" stroke="#ffffff" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <path d="M52 12 32 34" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="32" cy="57" r="4.5" fill="var(--accent-2)"/>
+          </svg>
+          <div>
+            <span class="font-display font-bold text-lg leading-none block">yabdev</span>
+            <span class="font-mono-tech text-[9px] tracking-[0.38em] block" style="color: var(--accent)">STUDIO</span>
+          </div>
+        </a>
+
+        <!-- Complete Footer Link Directory -->
+        <div class="flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono-tech">
+          <a href="https://www.linkedin.com/in/yabtech" target="_blank" rel="noopener" class="hover:text-white transition">LinkedIn</a>
+          <a href="https://x.com/musteelifestyle" target="_blank" rel="noopener" class="hover:text-white transition">X (@musteelifestyle)</a>
+          <a href="https://youtube.com/@yabdevstudio?si=2-Kww_cTvrC5g8b5" target="_blank" rel="noopener" class="hover:text-white transition">YouTube</a>
+          <a href="https://www.instagram.com/yabdevstudio?psln=MXQ2Zmoya3hiazc3bQ%3D%3D&utm_source=qr" target="_blank" rel="noopener" class="hover:text-white transition">Instagram</a>
+          <a href="https://www.tiktok.com/@yabdevstudio" target="_blank" rel="noopener" class="hover:text-white transition">TikTok (@yabdevstudio)</a>
+          <a href="https://www.tiktok.com/@yabtech1" target="_blank" rel="noopener" class="hover:text-white transition">TikTok (@yabtech1)</a>
+          <a href="https://yabdev.gumroad.com/l/THEAICREATORPROTOCOL" target="_blank" rel="noopener" style="color: var(--accent)" class="hover:underline">Gumroad Book</a>
+          <a href="https://whop.com/yabtech-studio?a=grandreaderd8" target="_blank" rel="noopener" style="color: var(--accent-2)" class="hover:underline">Whop Studio</a>
+        </div>
+
+        <p class="text-xs">&copy; 2026 Yabdev Studio. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================================================
+       PORTFOLIO LIGHTBOX MODAL
+       ======================================================================== -->
+  <dialog id="lightbox" aria-label="Project Viewer">
+    <div class="flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/40">
+        <div>
+          <span id="lb-tag" class="font-mono-tech text-[10px] uppercase tracking-widest block" style="color: var(--accent)">PROJECT</span>
+          <h4 id="lb-title" class="font-display font-bold text-lg text-white">Project Title</h4>
+        </div>
+        <button type="button" id="lb-close" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-mono-tech uppercase tracking-wider text-white cursor-pointer">
+          Close [ESC]
+        </button>
+      </div>
+      <div id="lb-media" class="bg-black flex items-center justify-center overflow-auto p-4 min-h-[320px] max-h-[calc(90vh-80px)]"></div>
+    </div>
+  </dialog>
+
+  <!-- ========================================================================
+       INTERACTIVE SCRIPTS: THREE.JS 3D SCENE, TILT PHYSICS, PORTFOLIO & UI
+       ======================================================================== -->
+  <script>
+    (function() {
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ----------------------------------------------------------------------
+         1. PORTFOLIO DATA & RENDERING (Preserves all 13 original items + rich procedural fallback)
+         ---------------------------------------------------------------------- */
+      const PORTFOLIO_ITEMS = [
+        { k: 'video', t: 'video', s: 'video/yabdev-video1.mp4', p: 'img/yabdev-poster1.jpg', n: 'Book promo: printed copy in hand', tag: 'Vertical short', icon: 'ph-book-open-text', grad: 'from-violet-600/40 via-indigo-900/40 to-slate-950' },
+        { k: 'video', t: 'video', s: 'video/yabdev-video2.mp4', p: 'img/yabdev-poster2.jpg', n: 'Book promo: tablet walkthrough', tag: 'Vertical short', icon: 'ph-device-tablet-speaker', grad: 'from-fuchsia-600/40 via-purple-900/40 to-slate-950' },
+        { k: 'video', t: 'video', s: 'video/yabdev-video3.mp4', p: 'img/yabdev-poster3.jpg', n: 'AI product ad on a phone', tag: 'UGC ad', icon: 'ph-device-mobile-camera', grad: 'from-orange-500/40 via-rose-900/40 to-slate-950' },
+        { k: 'video', t: 'video', s: 'video/yabdev-video4.mp4', p: 'img/yabdev-poster4.jpg', n: 'AI animated clip: city street', tag: 'AI animation', icon: 'ph-film-reel', grad: 'from-indigo-500/40 via-violet-900/40 to-slate-950' },
+        { k: 'video', t: 'video', s: 'video/yabdev-video5.mp4', p: 'img/yabdev-poster5.jpg', n: 'Talking-head edit with captions', tag: 'Video editing', icon: 'ph-waveform', grad: 'from-pink-500/40 via-rose-900/40 to-slate-950' },
+        { k: 'design', t: 'img', s: 'img/yabdev-book-front.jpg', p: 'img/yabdev-book-front.jpg', n: 'The AI Creator Protocol: cover', tag: 'Book design', icon: 'ph-book-bookmark', grad: 'from-purple-600/40 via-indigo-950 to-black' },
+        { k: 'design', t: 'img', s: 'img/yabdev-book-stack.jpg', p: 'img/yabdev-book-stack.jpg', n: 'The AI Creator Protocol: mockup', tag: 'Book design', icon: 'ph-stack', grad: 'from-amber-500/40 via-purple-950 to-black' },
+        { k: 'web', t: 'img', s: 'img/APP%20work.JPG', p: 'img/APP%20work.JPG', n: 'Wallcraft & AI Plus mobile app', tag: 'Mobile app', icon: 'ph-app-window', grad: 'from-cyan-500/40 via-indigo-950 to-black' },
+        { k: 'web', t: 'img', s: 'img/B1.png', p: 'img/B1.png', n: 'Astraeus Gym House website', tag: 'Website design', icon: 'ph-browser', grad: 'from-rose-500/40 via-slate-900 to-black' },
+        { k: 'design', t: 'img', s: 'img/fashion%204.png', p: 'img/fashion%204.png', n: 'Aesthetics boutique LinkedIn post', tag: 'Graphic design', icon: 'ph-coat-hanger', grad: 'from-fuchsia-500/40 via-slate-900 to-black' },
+        { k: 'design', t: 'img', s: 'img/music1.jpg', p: 'img/music1.jpg', n: 'Music art cover', tag: 'Design', icon: 'ph-vinyl-record', grad: 'from-violet-500/40 via-slate-900 to-black' },
+        { k: 'design', t: 'img', s: 'img/sd.JPG', p: 'img/sd.JPG', n: '8 Balls billiard graphics', tag: 'Design artwork', icon: 'ph-eight-ball', grad: 'from-orange-500/40 via-slate-900 to-black' },
+        { k: 'design', t: 'img', s: 'img/r1.jpg', p: 'img/r1.jpg', n: 'Social media post', tag: 'Design', icon: 'ph-share-network', grad: 'from-indigo-500/40 via-slate-900 to-black' }
+      ];
+
+      const gridEl = document.getElementById('portfolio-grid');
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+      }
+
+      gridEl.innerHTML = PORTFOLIO_ITEMS.map((item, idx) => `
+        <button type="button" class="work-card tilt-card text-left group reveal" data-idx="${idx}" data-cat="${item.k}" data-tilt data-cursor="${item.t === 'video' ? 'PLAY' : 'VIEW'}" style="--d:${(idx % 4) * 0.05}s" aria-label="Open ${escapeHtml(item.n)}">
+          <img src="${item.p}" alt="${escapeHtml(item.n)}" loading="lazy" class="relative z-10" onerror="this.classList.add('err'); this.parentNode.classList.add('missing')">
+          
+          <!-- High-Craft Generative Card Fallback if local image isn't mounted -->
+          <div class="proc-fallback bg-gradient-to-br ${item.grad}">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+              <i class="ph-duotone ${item.icon} text-3xl text-white"></i>
+            </div>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-black/50 text-white/70 border border-white/10">${escapeHtml(item.tag)}</span>
+          </div>
+
+          ${item.t === 'video' ? `
+            <span class="absolute top-3.5 right-3.5 z-20 w-10 h-10 rounded-full bg-black/70 border border-white/25 flex items-center justify-center text-white backdrop-blur-md group-hover:scale-110 transition-transform" style="box-shadow: 0 0 20px var(--accent-glow)">
+              <i class="ph-fill ph-play text-sm ml-0.5"></i>
+            </span>
+          ` : ''}
+
+          <div class="absolute inset-x-0 bottom-0 z-20 p-4 pt-12 bg-gradient-to-t from-[#05060f] via-[#05060f]/85 to-transparent flex flex-col gap-1">
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest" style="color: var(--accent)">${escapeHtml(item.tag)}</span>
+            <b class="font-display font-bold text-sm sm:text-base text-white leading-snug">${escapeHtml(item.n)}</b>
+          </div>
+        </button>
+      `).join('');
+
+      /* Portfolio Filter Logic */
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter');
+          filterBtns.forEach(b => {
+            const active = b === btn;
+            b.setAttribute('aria-pressed', active ? 'true' : 'false');
+            if (active) {
+              b.style.background = 'var(--accent)';
+              b.style.color = '#fff';
+              b.style.borderColor = 'var(--accent)';
+            } else {
+              b.style.background = 'rgba(255,255,255,0.04)';
+              b.style.color = 'var(--muted)';
+              b.style.borderColor = 'rgba(255,255,255,0.15)';
+            }
+          });
+
+          gridEl.querySelectorAll('.work-card').forEach(card => {
+            const match = filter === 'all' || card.getAttribute('data-cat') === filter;
+            card.style.display = match ? 'block' : 'none';
+          });
+        });
+      });
+
+      /* Lightbox Modal Viewer */
+      const lb = document.getElementById('lightbox');
+      const lbMedia = document.getElementById('lb-media');
+      const lbTitle = document.getElementById('lb-title');
+      const lbTag = document.getElementById('lb-tag');
+
+      function closeLightbox() {
+        if (lb.open) lb.close();
+        lbMedia.innerHTML = '';
+      }
+
+      gridEl.addEventListener('click', (e) => {
+        const card = e.target.closest('.work-card');
+        if (!card) return;
+        const item = PORTFOLIO_ITEMS[+card.getAttribute('data-idx')];
+        lbTitle.textContent = item.n;
+        lbTag.textContent = item.tag;
+
+        if (item.t === 'video') {
+          lbMedia.innerHTML = `
+            <div class="w-full flex flex-col items-center">
+              <video controls autoplay playsinline src="${item.s}" poster="${item.p}" class="max-h-[70vh] rounded-xl border border-white/15"></video>
+              <p class="font-mono-tech text-xs text-[var(--muted)] mt-3">Want a similar ${escapeHtml(item.tag)} for your brand? <a href="https://wa.me/message/FKLOJM3GV2QQE1" target="_blank" rel="noopener" class="underline text-white">Request on WhatsApp &rarr;</a></p>
+            </div>
+          `;
+        } else {
+          lbMedia.innerHTML = `
+            <div class="w-full flex flex-col items-center">
+              <img src="${item.s}" alt="${escapeHtml(item.n)}" class="max-h-[70vh] rounded-xl border border-white/15" onerror="this.outerHTML='<div class=\\'p-12 text-center rounded-2xl border border-white/15 bg-white/5\\'><i class=\\'ph-duotone ${item.icon} text-6xl text-white mb-3\\'></i><h4 class=\\'font-display font-bold text-xl\\'>${escapeHtml(item.n)}</h4><p class=\\'text-sm text-[var(--muted)] mt-1\\'>${escapeHtml(item.tag)} &mdash; Yabdev Studio Archive</p></div>'">
+            </div>
+          `;
+        }
+        if (lb.showModal) lb.showModal();
+        else lb.setAttribute('open', '');
+      });
+
+      document.getElementById('lb-close').addEventListener('click', closeLightbox);
+      lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+      /* ----------------------------------------------------------------------
+         2. 3D PERSPECTIVE TILT CARDS & INTERACTIVE 3D BOOK
+         ---------------------------------------------------------------------- */
+      if (!prefersReducedMotion) {
+        document.querySelectorAll('[data-tilt]').forEach(card => {
+          card.addEventListener('pointermove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xc = rect.width / 2;
+            const yc = rect.height / 2;
+            const rotateX = ((y - yc) / yc) * -6;
+            const rotateY = ((x - xc) / xc) * 6;
+            card.style.transform = `perspective(1100px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg)`;
+            card.style.setProperty('--gx', `${x}px`);
+            card.style.setProperty('--gy', `${y}px`);
+          });
+          card.addEventListener('pointerleave', () => {
+            card.style.transform = 'perspective(1100px) rotateX(0deg) rotateY(0deg)';
+          });
+        });
+
+        // Interactive 3D Book Showcase
+        const bookArea = document.getElementById('book-interactive-area');
+        const book3d = document.getElementById('book-3d');
+        if (bookArea && book3d) {
+          bookArea.addEventListener('pointermove', (e) => {
+            const r = bookArea.getBoundingClientRect();
+            const nx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+            const ny = ((e.clientY - r.top) / r.height - 0.5) * 2;
+            book3d.style.transform = `rotateY(${(-22 + nx * 28).toFixed(1)}deg) rotateX(${(10 - ny * 18).toFixed(1)}deg)`;
+          });
+          bookArea.addEventListener('pointerleave', () => {
+            book3d.style.transform = 'rotateY(-24deg) rotateX(10deg)';
+          });
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         3. CUSTOM MAGNETIC CURSOR
+         ---------------------------------------------------------------------- */
+      const cursor = document.getElementById('custom-cursor');
+      let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+      let curX = mouseX, curY = mouseY;
+
+      window.addEventListener('pointermove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      document.querySelectorAll('[data-cursor]').forEach(el => {
+        el.addEventListener('pointerenter', () => {
+          cursor.classList.add('cursor-active');
+          cursor.textContent = el.getAttribute('data-cursor');
+        });
+        el.addEventListener('pointerleave', () => {
+          cursor.classList.remove('cursor-active');
+          cursor.textContent = '';
+        });
+      });
+
+      /* ----------------------------------------------------------------------
+         4. SCROLL REVEAL OBSERVER & MOBILE MENU & CLIPBOARD
+         ---------------------------------------------------------------------- */
+      const revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(en => {
+            if (en.isIntersecting) {
+              en.target.classList.add('in');
+              io.unobserve(en.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => io.observe(el));
+      } else {
+        revealEls.forEach(el => el.classList.add('in'));
+      }
+
+      // Mobile Menu Toggle
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      menuBtn.addEventListener('click', () => {
+        const isOpen = !mobileNav.classList.contains('hidden');
+        mobileNav.classList.toggle('hidden', isOpen);
+        mobileNav.classList.toggle('flex', !isOpen);
+        menuBtn.setAttribute('aria-expanded', String(!isOpen));
+      });
+      mobileNav.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          mobileNav.classList.add('hidden');
+          mobileNav.classList.remove('flex');
+        });
+      });
+
+      // Interactive WhatsApp Brief Selector
+      const briefChips = document.querySelectorAll('.brief-chip');
+      const waLink = document.getElementById('whatsapp-brief-link');
+      briefChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          briefChips.forEach(c => {
+            c.classList.remove('bg-white/10', 'text-white');
+            c.classList.add('bg-white/5', 'text-[var(--muted)]');
+          });
+          chip.classList.add('bg-white/10', 'text-white');
+          chip.classList.remove('bg-white/5', 'text-[var(--muted)]');
+          const svc = chip.getAttribute('data-service');
+          waLink.href = `https://wa.me/2348147017603?text=${encodeURIComponent(`Hi Yabdev Studio! I'd love to start a project regarding ${svc}.`)}`;
+        });
+      });
+
+      // Clipboard Copy Helpers
+      function copyText(text, btn) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 1800);
+      }
+      document.getElementById('copy-phone-btn').addEventListener('click', function() {
+        copyText('+234 814 7017 603', this);
+      });
+      document.getElementById('copy-email-btn').addEventListener('click', function() {
+        copyText('Yabtech10@gmail.com', this);
+      });
+
+      /* ----------------------------------------------------------------------
+         5. THREE.JS 3D INTERACTIVE STUDIO SCULPTURE & PARTICLE FIELD
+         ---------------------------------------------------------------------- */
+      let scene, camera, renderer, knotMesh, wireMesh, particleSystem, pointLight1, pointLight2;
+
+      function initThreeJS() {
+        if (typeof THREE === 'undefined') return;
+        const canvas = document.getElementById('webgl-canvas');
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 7.5;
+
+        renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Main Studio TorusKnot Sculpture
+        const geometry = new THREE.TorusKnotGeometry(1.65, 0.44, 150, 24, 2, 3);
+        const material = new THREE.MeshPhysicalMaterial({
+          color: 0x121631,
+          roughness: 0.18,
+          metalness: 0.78,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.15,
+          wireframe: false
+        });
+        knotMesh = new THREE.Mesh(geometry, material);
+        knotMesh.position.set(2.2, 0.2, -1);
+        scene.add(knotMesh);
+
+        // Outer Wireframe Cage
+        const wireGeo = new THREE.IcosahedronGeometry(2.65, 1);
+        const wireMat = new THREE.MeshBasicMaterial({
+          color: 0x8b5cf6,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.14
+        });
+        wireMesh = new THREE.Mesh(wireGeo, wireMat);
+        wireMesh.position.set(2.2, 0.2, -1);
+        scene.add(wireMesh);
+
+        // Floating Starfield Particles
+        const pCount = 320;
+        const pGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount * 3; i++) {
+          positions[i] = (Math.random() - 0.5) * 22;
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const pMat = new THREE.PointsMaterial({
+          color: 0x8b5cf6,
+          size: 0.045,
+          transparent: true,
+          opacity: 0.65
+        });
+        particleSystem = new THREE.Points(pGeo, pMat);
+        scene.add(particleSystem);
+
+        // Studio Lights (No Green)
+        const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+        scene.add(ambient);
+
+        pointLight1 = new THREE.PointLight(0x8b5cf6, 4.5, 25);
+        pointLight1.position.set(5, 4, 4);
+        scene.add(pointLight1);
+
+        pointLight2 = new THREE.PointLight(0xff5e3a, 3.8, 25);
+        pointLight2.position.set(-5, -3, 3);
+        scene.add(pointLight2);
+
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      }
+
+      // Live Brand Theme Switcher (Updates CSS Variables + Three.js 3D Lights)
+      const THEME_COLORS = {
+        violet:  { p: 0x8b5cf6, s: 0xff5e3a },
+        amber:   { p: 0xf97316, s: 0xec4899 },
+        crimson: { p: 0xf43f5e, s: 0xa855f7 },
+        cyan:    { p: 0x38bdf8, s: 0x6366f1 }
+      };
+
+      const themeBtns = document.querySelectorAll('[data-set-theme]');
+      themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const t = btn.getAttribute('data-set-theme');
+          document.documentElement.setAttribute('data-theme', t);
+          themeBtns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+          if (pointLight1 && THEME_COLORS[t]) {
+            pointLight1.color.setHex(THEME_COLORS[t].p);
+            pointLight2.color.setHex(THEME_COLORS[t].s);
+            wireMesh.material.color.setHex(THEME_COLORS[t].p);
+            particleSystem.material.color.setHex(THEME_COLORS[t].p);
+          }
+        });
+      });
+
+      // Animation Loop
+      function animateLoop() {
+        requestAnimationFrame(animateLoop);
+
+        // Smooth Magnetic Cursor Lerp
+        curX += (mouseX - curX) * 0.18;
+        curY += (mouseY - curY) * 0.18;
+        if (cursor) {
+          cursor.style.left = `${curX}px`;
+          cursor.style.top = `${curY}px`;
+        }
+
+        // Three.js Render & Interactive Parallax
+        if (renderer && scene && camera && !prefersReducedMotion) {
+          const normX = (mouseX / window.innerWidth - 0.5) * 2;
+          const normY = (mouseY / window.innerHeight - 0.5) * 2;
+          const scrollY = window.scrollY || 0;
+
+          knotMesh.rotation.x += 0.004;
+          knotMesh.rotation.y += 0.006;
+          knotMesh.position.x = (window.innerWidth > 1024 ? 2.1 : 0) + normX * 0.45;
+          knotMesh.position.y = 0.2 - normY * 0.45 - scrollY * 0.0008;
+
+          wireMesh.rotation.x -= 0.0025;
+          wireMesh.rotation.y -= 0.0035;
+          wireMesh.position.copy(knotMesh.position);
+
+          particleSystem.rotation.y += 0.0008;
+          particleSystem.position.y = scrollY * 0.0005;
+
+          renderer.render(scene, camera);
+        }
+      }
+
+      window.onload = function() {
+        initThreeJS();
+        animateLoop();
+      };
+    })();
+  </script>
+</body>
+</html>
